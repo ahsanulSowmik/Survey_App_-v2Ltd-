@@ -13,7 +13,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
 
-    ActivityMainBinding binding;
+//    ActivityMainBinding binding;
     Button button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,23 +21,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
-
-
-//        binding = ActivityMainBinding.inflate(getLayoutInflater());
-//        setContentView(binding.getRoot());
-//
-//        binding.floatingActionButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(MainActivity.this, QuestionsActivity.class);
-//
-//                startActivity(intent);
-////                Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
-////                     .setAction("Action", null).show();
-//
-//            }
-//        });
 
         FloatingActionButton fab = findViewById(R.id.floatingButton);
 
@@ -47,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(MainActivity.this, QuestionsActivity.class);
                 startActivity(intent);
-                finish();
+//                finish();
             }
         });
 

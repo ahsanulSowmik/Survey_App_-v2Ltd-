@@ -2,14 +2,12 @@ package com.example.surveyappv2ltd.view;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -32,19 +30,27 @@ public class QuestionsActivity<layoutManager> extends AppCompatActivity {
     private ProgressBar progress_bar;
 
     private LinearLayoutManager layoutManager;
-    private ArrayList<Questions> questionArrayList = new ArrayList<>();
+    public static  List<Questions> questionsList;
 
 
-    private QuestionAdapter adapter;
+    private QuestionAdapter questionRecyclerViewAdapter;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_questions);
 
 //        superListView = findViewById(R.id.superListView);
 
+        Log.d(TAG, "onCreate: ");
+
+
+
         getQuestions();
+
     }
+
+
+
 
     private void getQuestions() {
         Call<List<Questions>> call = RetrofitRequest.getInstance().getQuestionApi().getQuestions();
@@ -52,16 +58,10 @@ public class QuestionsActivity<layoutManager> extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onResponse(Call<List<Questions>> call, Response<List<Questions>> response) {
-                List<Questions> myheroList = response.body();
-                String[] oneHeroes = new String[myheroList.size()];
 
-//                for (int i = 0; i < myheroList.size(); i++) {
-//                    oneHeroes[i] = String.valueOf(myheroList.get(0).getOptions().get(1).getValue());
-//                }
+                questionsList = response.body();
+                setQuestionRecyclerView(questionsList);
 
-                Log.d(TAG, "onResponse: "+String.valueOf(myheroList.get(0).getOptions().get(1).getValue()));
-
-//                superListView.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, oneHeroes));
             }
 
             @Override
@@ -70,5 +70,25 @@ public class QuestionsActivity<layoutManager> extends AppCompatActivity {
             }
 
         });
+
+    }
+
+    private void setQuestionRecyclerView(List<Questions> questionArrayList) {
+
+        recycler_view = findViewById(R.id.recycler_view);
+
+        // use a linear layout manager
+        layoutManager = new LinearLayoutManager(QuestionsActivity.this);
+        recycler_view.setLayoutManager(layoutManager);
+
+        recycler_view.setHasFixedSize(true);
+
+        // adapter
+        questionRecyclerViewAdapter = new QuestionAdapter(QuestionsActivity.this, questionArrayList);
+//        Log.d(TAG, "befor setadapter"+ questionArrayList.get(0));
+        recycler_view.setAdapter(questionRecyclerViewAdapter);
+//        Log.d(TAG, "after setadapter"+ String.valueOf(questionArrayList.get(0).getOptions().get(1).getValue()));
+
+
     }
 }
