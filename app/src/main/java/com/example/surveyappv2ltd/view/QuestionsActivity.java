@@ -1,12 +1,17 @@
 package com.example.surveyappv2ltd.view;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -28,6 +33,10 @@ public class QuestionsActivity<layoutManager> extends AppCompatActivity {
 
     private RecyclerView recycler_view;
     private ProgressBar progress_bar;
+    Bitmap photo;
+
+    String imageTempName;
+    int position;
 
     private LinearLayoutManager layoutManager;
     public static  List<Questions> questionsList;
@@ -84,10 +93,28 @@ public class QuestionsActivity<layoutManager> extends AppCompatActivity {
         recycler_view.setHasFixedSize(true);
 
         // adapter
-        questionRecyclerViewAdapter = new QuestionAdapter(QuestionsActivity.this, questionArrayList);
+        questionRecyclerViewAdapter = new QuestionAdapter(QuestionsActivity.this, questionArrayList,photo);
 //        Log.d(TAG, "befor setadapter"+ questionArrayList.get(0));
         recycler_view.setAdapter(questionRecyclerViewAdapter);
 //        Log.d(TAG, "after setadapter"+ String.valueOf(questionArrayList.get(0).getOptions().get(1).getValue()));
+
+
+    }
+
+    public void captureImage(int pos, String imageName) {
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        Log.d(TAG, "captureImage: ");
+        startActivityForResult(cameraIntent, 123);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        photo = (Bitmap) data.getExtras().get("data");
+//        imageView.setImageBitmap(photo);
+
+        Log.d(TAG, "onActivityResult: "+photo );
+        setQuestionRecyclerView(questionsList);
 
 
     }
