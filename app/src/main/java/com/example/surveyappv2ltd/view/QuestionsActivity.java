@@ -13,6 +13,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -32,8 +34,10 @@ public class QuestionsActivity<layoutManager> extends AppCompatActivity {
     private static final String TAG = QuestionsActivity.class.getSimpleName();
 
     private RecyclerView recycler_view;
-    private ProgressBar progress_bar;
     Bitmap photo;
+
+    Button submitButton;
+    ProgressBar progress_bar;
 
     String imageTempName;
     int position;
@@ -50,11 +54,14 @@ public class QuestionsActivity<layoutManager> extends AppCompatActivity {
 
 //        superListView = findViewById(R.id.superListView);
 
+        submitButton = findViewById(R.id.button);
+        progress_bar = findViewById(R.id.progress_bar);
+
         Log.d(TAG, "onCreate: ");
 
-
-
         getQuestions();
+
+//        submitAnswers();
 
     }
 
@@ -69,7 +76,10 @@ public class QuestionsActivity<layoutManager> extends AppCompatActivity {
             public void onResponse(Call<List<Questions>> call, Response<List<Questions>> response) {
 
                 questionsList = response.body();
+
+                progress_bar.setVisibility(View.GONE);
                 setQuestionRecyclerView(questionsList);
+                submitButton.setVisibility(View.VISIBLE);
 
             }
 
@@ -115,7 +125,7 @@ public class QuestionsActivity<layoutManager> extends AppCompatActivity {
 
         Log.d(TAG, "onActivityResult: "+photo );
         setQuestionRecyclerView(questionsList);
-
-
     }
+
+
 }
