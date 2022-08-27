@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.QuestionsActivity">
+    tools:context=".view.QuestionsActivity"
+    android:background="#ededed">
 
 
 
@@ -39,15 +40,14 @@
             <Button
                 android:id="@+id/button"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginLeft="17dp"
-                android:layout_marginRight="17dp"
-                android:layout_marginBottom="20dp"
-                android:background="#1C8502"
-                android:text="Submit Answer"
+                android:layout_height="match_parent"
+                android:layout_margin="3dp"
+                android:background="#03A9F4"
+                android:text="Submit"
                 android:textColor="@color/white"
                 android:textSize="20dp"
-                android:visibility="gone"/>
+                android:visibility="invisible"
+                />
         </LinearLayout>
 
     </ScrollView>
@@ -59,6 +59,9 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
+
+
+
 
 
 </RelativeLayout>

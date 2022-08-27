@@ -1,6 +1,7 @@
 package com.example.surveyappv2ltd.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,8 @@ public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.ViewHolder
 
         holder.answerTextView.setText(options.get(position).getValue());
 
+        isCheckBoxClicked(holder,position);
+
     }
 
     @Override
@@ -57,5 +60,20 @@ public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.ViewHolder
             answerTextView = itemView.findViewById(R.id.answerTextView);
 
         }
+    }
+
+    public void isCheckBoxClicked(ViewHolder holder, int position){
+        holder.answerCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean checked = ((CheckBox) v).isChecked();
+
+                if (checked){
+
+
+                    Log.d("TAG", "onClick: "+options.get(position).getValue());
+                }
+            }
+        });
     }
 }
