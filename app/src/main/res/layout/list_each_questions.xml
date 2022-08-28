@@ -70,7 +70,6 @@
                 android:id="@+id/numberInputView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
                 android:textSize="20dp"
                 android:visibility="gone"></EditText>
 
@@ -100,7 +99,6 @@
                     android:visibility="gone">
                 </ImageView>
             </LinearLayout>
-
 
 
         </LinearLayout>

@@ -13,17 +13,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.surveyappv2ltd.R;
 import com.example.surveyappv2ltd.model.Options;
+import com.example.surveyappv2ltd.model.SubmittedSurvey;
+import com.example.surveyappv2ltd.view.QuestionsActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.ViewHolder> {
 
     private final Context context;
     private final List<Options> options;
+    public int questionPosition;
 
-    public OptionAdapter(List<Options> options, Context context) {
+    private static ArrayList<SubmittedSurvey> submittedSurveysData;
+
+    public OptionAdapter(List<Options> options, Context context, int questionPosition,ArrayList<SubmittedSurvey> submittedSurveysData) {
         this.context = context;
         this.options = options;
+        this.questionPosition = questionPosition;
+        this.submittedSurveysData=submittedSurveysData;
 
     }
 
@@ -40,6 +48,11 @@ public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         holder.answerTextView.setText(options.get(position).getValue());
+
+       if(submittedSurveysData.get(questionPosition).getOptionPosition()==position){
+          Log.d("TAG", "isCheckBoxClicked: "+submittedSurveysData.get(questionPosition).getOptionPosition()+" "+ position);
+           holder.answerCheckBox.setChecked(true);
+       }
 
         isCheckBoxClicked(holder,position);
 
@@ -70,8 +83,8 @@ public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.ViewHolder
 
                 if (checked){
 
+                    ((QuestionsActivity)context).setAnswer(questionPosition,options.get(position).getValue(),position);
 
-                    Log.d("TAG", "onClick: "+options.get(position).getValue());
                 }
             }
         });

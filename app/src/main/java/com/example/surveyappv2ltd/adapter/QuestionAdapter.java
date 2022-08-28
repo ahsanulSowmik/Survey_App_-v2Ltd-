@@ -1,15 +1,17 @@
 package com.example.surveyappv2ltd.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -21,9 +23,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.surveyappv2ltd.MainActivity;
 import com.example.surveyappv2ltd.R;
 import com.example.surveyappv2ltd.model.Questions;
+import com.example.surveyappv2ltd.model.SubmittedSurvey;
 import com.example.surveyappv2ltd.view.QuestionsActivity;
 
 import java.util.ArrayList;
@@ -36,16 +38,21 @@ public class QuestionAdapter<QuestionsAdapter> extends RecyclerView.Adapter <Que
 
     private LinearLayoutManager layoutManager;
 
+    private static ArrayList<SubmittedSurvey> submittedSurveysData;
+
     private OptionAdapter optionAdapter;
     Bitmap photo;
 
+
+    boolean isOnTextChanged = false;
 //    private MyInterface listener;
 
 
-    public QuestionAdapter(Context context, List<Questions> questionArrayList, Bitmap photo) {
+    public QuestionAdapter(Context context, List<Questions> questionArrayList, Bitmap photo, ArrayList<SubmittedSurvey> submittedSurveysData) {
         this.context = context;
         this.questionArrayList = questionArrayList;
         this.photo =  photo;
+        this.submittedSurveysData = submittedSurveysData;
     }
 
 
@@ -72,7 +79,7 @@ public class QuestionAdapter<QuestionsAdapter> extends RecyclerView.Adapter <Que
 
             viewHolder.multipleAnsRecycleView.setVisibility(View.VISIBLE);
             OptionAdapter questionAdapter;
-            questionAdapter = new OptionAdapter(questionArrayList.get(i).getOptions(),context);
+            questionAdapter = new OptionAdapter(questionArrayList.get(i).getOptions(),context,i,submittedSurveysData);
             viewHolder.multipleAnsRecycleView.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false));
             viewHolder.multipleAnsRecycleView.setAdapter(questionAdapter);
             questionAdapter.notifyDataSetChanged();
@@ -80,11 +87,14 @@ public class QuestionAdapter<QuestionsAdapter> extends RecyclerView.Adapter <Que
         }
         else if(questionType.equals("textInput")){
             viewHolder.textInputView.setVisibility(View.VISIBLE);
-
+            viewHolder.textInputView.setText(submittedSurveysData.get(i).getAnswer());
+            editText(viewHolder,i);
         }
         else if(questionType.equals("numberInput")){
-            viewHolder.numberInputView.setVisibility(View.VISIBLE);
-
+            viewHolder.textInputView.setVisibility(View.VISIBLE);
+            viewHolder.textInputView.setInputType(InputType.TYPE_CLASS_NUMBER);
+            viewHolder.textInputView.setText(submittedSurveysData.get(i).getAnswer());
+            editText(viewHolder,i);
         }
 
         else if (questionType.equals("dropdown")){
@@ -100,8 +110,9 @@ public class QuestionAdapter<QuestionsAdapter> extends RecyclerView.Adapter <Que
                 viewHolder.cameraView.setVisibility(View.VISIBLE);
                 viewHolder.cameraView.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-
-                            ((QuestionsActivity)context).captureImage(12,"sowmik");
+//                        String  value = viewHolder.numberInputView.getText().toString();
+//                        Log.d("TAG", "numberInputView: "+value);
+                           ((QuestionsActivity)context).captureImage(12,"sowmik");
 
                     }
                 });
@@ -118,13 +129,42 @@ public class QuestionAdapter<QuestionsAdapter> extends RecyclerView.Adapter <Que
 
     }
 
+    public void editText(ViewHolder viewHolder, int position){
+//        viewHolder.textInputView.setVisibility(View.VISIBLE);
+
+        viewHolder.textInputView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                Log.d("TAG", "check beforeTextChanged: ");
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                isOnTextChanged = true;
+                Log.d("TAG", "check onTextChanged: ");
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                Log.d("TAG", "check afterTextChanged: "+s);
+
+                submittedSurveysData.get(position).setAnswer(s.toString());
+
+            }
+
+        });
+
+
+    }
+
 
     public void setOption(ViewHolder viewHolder, int i){
         ArrayList<String> arrayList = new ArrayList<>();
 //            arrayList.add(questionArrayList.get(0).getOptions().get(0).getValue());
 
 
-        Log.d("TAG", "setOption: ");
         for(int optionPosition = 0 ;optionPosition<questionArrayList.get(i).getOptions().size();optionPosition++){
             arrayList.add(questionArrayList.get(i).getOptions().get(optionPosition).getValue());
         }
@@ -132,11 +172,16 @@ public class QuestionAdapter<QuestionsAdapter> extends RecyclerView.Adapter <Que
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context,android.R.layout.simple_spinner_item, arrayList);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         viewHolder.dropdown.setAdapter(arrayAdapter);
+        viewHolder.dropdown.setSelection(submittedSurveysData.get(i).getOptionPosition());
         viewHolder.dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String tutorialsName = parent.getItemAtPosition(position).toString();
-                Toast.makeText(parent.getContext(), "Selected: " + tutorialsName,Toast.LENGTH_LONG).show();
+                String dropdownSelectedAnswer = parent.getItemAtPosition(position).toString();
+                Toast.makeText(parent.getContext(), "Selected: " + position,Toast.LENGTH_LONG).show();
+
+                    submittedSurveysData.get(i).setOptionPosition(position);
+                    submittedSurveysData.get(i).setAnswer(dropdownSelectedAnswer);
+
             }
             @Override
             public void onNothingSelected(AdapterView <?> parent) {
@@ -167,6 +212,7 @@ public class QuestionAdapter<QuestionsAdapter> extends RecyclerView.Adapter <Que
         public TextView requiredView;
         ImageButton cameraView;
         ImageView imageview;
+        public Button button;
 //        private final TextView question_text;
 
         public ViewHolder(@NonNull View itemView) {
@@ -181,6 +227,11 @@ public class QuestionAdapter<QuestionsAdapter> extends RecyclerView.Adapter <Que
             dropdown = itemView.findViewById(R.id.dropdown);
 
             requiredView = itemView.findViewById(R.id.requiredView);
+
+
+            String value;
+            value = textInputView.getText().toString();
+            Log.d("TAG", "ViewHolder: "+value);
 
             // attaching data adapter to spinner
 //            dropdown.setAdapter(categories);
