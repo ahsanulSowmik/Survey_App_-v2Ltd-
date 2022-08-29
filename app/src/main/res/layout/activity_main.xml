@@ -6,28 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/pre_survey_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </androidx.recyclerview.widget.RecyclerView>
-
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.898"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_gravity="bottom|end"
-        app:srcCompat="@android:drawable/ic_menu_add" />
-
 
 <!--    <Button-->
 <!--        android:id="@+id/button"-->
@@ -39,9 +17,70 @@
 <!--        android:textStyle="bold"/>-->
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="230dp">
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
 
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/addSurvey"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.CardView"
+                android:background="@color/purple_200">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Add Survey"
+                    android:textStyle="bold"
+                    android:textSize="40dp"
+                    android:textAlignment="center"
+                    android:background="@color/purple_200">
+
+                </TextView>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="30dp">
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/surveyHistory"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:background="@color/purple_200"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.CardView">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Survey History"
+                    android:textStyle="bold"
+                    android:textSize="40dp"
+                    android:textAlignment="center"
+                    android:background="@color/purple_200">
+
+                </TextView>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

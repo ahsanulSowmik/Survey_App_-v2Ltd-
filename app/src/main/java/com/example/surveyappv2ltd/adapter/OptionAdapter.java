@@ -49,6 +49,7 @@ public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.ViewHolder
 
         holder.answerTextView.setText(options.get(position).getValue());
 
+
        if(submittedSurveysData.get(questionPosition).getOptionPosition()==position){
           Log.d("TAG", "isCheckBoxClicked: "+submittedSurveysData.get(questionPosition).getOptionPosition()+" "+ position);
            holder.answerCheckBox.setChecked(true);
