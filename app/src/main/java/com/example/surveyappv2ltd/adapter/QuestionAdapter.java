@@ -77,12 +77,7 @@ public class QuestionAdapter<QuestionsAdapter> extends RecyclerView.Adapter <Que
        String questionType = questionArrayList.get(i).getType();
         if(questionType.equals("multipleChoice") || questionType.equals("checkbox")){
 
-            viewHolder.multipleAnsRecycleView.setVisibility(View.VISIBLE);
-            OptionAdapter questionAdapter;
-            questionAdapter = new OptionAdapter(questionArrayList.get(i).getOptions(),context,i,submittedSurveysData);
-            viewHolder.multipleAnsRecycleView.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false));
-            viewHolder.multipleAnsRecycleView.setAdapter(questionAdapter);
-            questionAdapter.notifyDataSetChanged();
+            setOptionInRecyclerView(viewHolder,i);
 
         }
         else if(questionType.equals("textInput")){
@@ -105,29 +100,47 @@ public class QuestionAdapter<QuestionsAdapter> extends RecyclerView.Adapter <Que
         }
         else if (questionType.equals("camera")){
 
-            if(photo == null){
+            cameraViewOpenAndSetImage(viewHolder);
 
-                viewHolder.cameraView.setVisibility(View.VISIBLE);
-                viewHolder.cameraView.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-//                        String  value = viewHolder.numberInputView.getText().toString();
-//                        Log.d("TAG", "numberInputView: "+value);
-                           ((QuestionsActivity)context).captureImage(12,"sowmik");
 
-                    }
-                });
-
-            }
-            else{
-                viewHolder.cameraView.setVisibility(View.GONE);
-                Log.d("TAG", "onClick photo: "+photo);
-                viewHolder.imageview.setVisibility(View.VISIBLE);
-                viewHolder.imageview.setImageBitmap(photo);
-            }
 
         }
 
     }
+
+    private void cameraViewOpenAndSetImage(ViewHolder viewHolder) {
+
+        if(photo == null){
+
+            viewHolder.cameraView.setVisibility(View.VISIBLE);
+            viewHolder.cameraView.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+//                        String  value = viewHolder.numberInputView.getText().toString();
+//                        Log.d("TAG", "numberInputView: "+value);
+                    ((QuestionsActivity)context).captureImage(12,"sowmik");
+
+                }
+            });
+
+        }
+        else{
+            viewHolder.cameraView.setVisibility(View.GONE);
+            Log.d("TAG", "onClick photo: "+photo);
+            viewHolder.imageview.setVisibility(View.VISIBLE);
+            viewHolder.imageview.setImageBitmap(photo);
+        }
+    }
+
+    private void setOptionInRecyclerView(ViewHolder viewHolder, int i) {
+        viewHolder.multipleAnsRecycleView.setVisibility(View.VISIBLE);
+        OptionAdapter questionAdapter;
+        questionAdapter = new OptionAdapter(questionArrayList.get(i).getOptions(),context,i,submittedSurveysData);
+        viewHolder.multipleAnsRecycleView.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false));
+        viewHolder.multipleAnsRecycleView.setAdapter(questionAdapter);
+        questionAdapter.notifyDataSetChanged();
+    }
+
+
 
     public void editText(ViewHolder viewHolder, int position){
 //        viewHolder.textInputView.setVisibility(View.VISIBLE);

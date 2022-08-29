@@ -81,9 +81,7 @@ public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.ViewHolder
             @Override
             public void onClick(View v) {
                 boolean checked = ((CheckBox) v).isChecked();
-
                 if (checked){
-
                     ((QuestionsActivity)context).setAnswer(questionPosition,options.get(position).getValue(),position);
 
                 }

@@ -33,6 +33,14 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         surveyHistory = findViewById(R.id.surveyHistory);
 
 
+        addSurvey();
+        viewHistory();
+
+
+    }
+
+    public void addSurvey(){
+
         addSurvey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -43,7 +51,9 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             }
         });
 
+    }
 
+    public void viewHistory(){
         surveyHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,12 +61,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 Intent intent = new Intent(MainActivity.this, SurveyHistory.class);
                 startActivity(intent);
 
-
             }
         });
-
-
-
-
     }
 }

@@ -75,7 +75,7 @@ public class QuestionsActivity<layoutManager> extends AppCompatActivity implemen
         Log.d(TAG, "onCreate: ");
         getQuestions();
 
-       submitAnswers();
+        submitAnswers();
 
     }
 
@@ -90,9 +90,7 @@ public class QuestionsActivity<layoutManager> extends AppCompatActivity implemen
             public void onResponse(Call<List<Questions>> call, Response<List<Questions>> response) {
 
                 questionsList = response.body();
-
                 addAnswerInArray();
-
                 progress_bar.setVisibility(View.GONE);
                 setQuestionRecyclerView(questionsList);
                submitButton.setVisibility(View.VISIBLE);
@@ -147,9 +145,6 @@ public class QuestionsActivity<layoutManager> extends AppCompatActivity implemen
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 
         startActivityForResult(cameraIntent, 123);
-
-
-
     }
 
     @Override
@@ -190,9 +185,7 @@ public class QuestionsActivity<layoutManager> extends AppCompatActivity implemen
                         progress_bar.setVisibility(View.VISIBLE);
                         finish();
                     }
-
                 }
-
             }
         });
     }
