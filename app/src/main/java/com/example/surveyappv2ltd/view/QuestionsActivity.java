@@ -17,14 +17,16 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.surveyappv2ltd.Database.DBHelper;
 import com.example.surveyappv2ltd.R;
 import com.example.surveyappv2ltd.adapter.QuestionAdapter;
+import com.example.surveyappv2ltd.databinding.ActivityQuestionsBinding;
 import com.example.surveyappv2ltd.model.Questions;
 import com.example.surveyappv2ltd.model.SubmittedSurvey;
 import com.example.surveyappv2ltd.retrofit.RetrofitRequest;
 
 import java.io.ByteArrayOutputStream;
-import java.security.PublicKey;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +35,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class QuestionsActivity<layoutManager> extends AppCompatActivity {
+//import com.example.surveyappv2ltd.databinding.ActivityDataInsertBinding;
+
+public class QuestionsActivity<layoutManager> extends AppCompatActivity implements Serializable {
     private static final String TAG = QuestionsActivity.class.getSimpleName();
 
     private RecyclerView recycler_view;
@@ -57,12 +61,16 @@ public class QuestionsActivity<layoutManager> extends AppCompatActivity {
 
     public String imageUrl;
 
+    DBHelper DB;
+
+    @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questions);
-
         progress_bar = findViewById(R.id.progress_bar);
         submitButton = findViewById(R.id.button);
+        DB = new DBHelper(this);
 
         Log.d(TAG, "onCreate: ");
         getQuestions();
@@ -147,6 +155,7 @@ public class QuestionsActivity<layoutManager> extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         photo = (Bitmap) data.getExtras().get("data");
 //        imageView.setImageBitmap(photo);
 
@@ -170,11 +179,18 @@ public class QuestionsActivity<layoutManager> extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                for(int i=0;i<submittedSurveysData.size();i++){
+                for(int i=0;i<questionsList.size();i++){
                     if(questionsList.get(i).getType().equals("camera")){
                         submittedSurveysData.get(i).setAnswer(imageUrl);
                     }
-                    Log.d(TAG, "allAnswer: "+submittedSurveysData.get(i).getQuestion()+" "+submittedSurveysData.get(i).getAnswer());
+                    Boolean checkinsertdata  = DB.insertuserdata(submittedSurveysData.get(i).getQuestion(), submittedSurveysData.get(i).getAnswer());
+                    if(checkinsertdata==true)
+                    {
+                        Toast.makeText(QuestionsActivity.this, "Submit All Answers Successfully", Toast.LENGTH_SHORT).show();
+                        progress_bar.setVisibility(View.VISIBLE);
+                        finish();
+                    }
+
                 }
 
             }
